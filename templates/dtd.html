@@ -1,0 +1,306 @@
+{% extends "base.html" %} 
+{% block titre %}
+<title>validation par DTD</title>
+{% endblock %}
+{% block body %}
+<h1 style="text-align: center; margin-top: 60px;">Validation par DTD</h1>
+
+    <div id="divP">
+        <button id="dtdInt" class="classbutton">Validation par DTD Intern</button>
+        <button id="dtdExt" class="classbutton">Validation par DTD Extern</button>
+    </div>
+
+    <div id="dtdIntern" hidden>
+        <button id="dtdIntEditeur" class="classbutton">Editeur de dtd intern</button>
+        <button id="dtdIntfile" class="classbutton">Exporter fichier de dtd intern</button>
+        <button class="previousB">Précédent</button>
+    </div>
+
+    <div id="dtdExtern" hidden>
+        <button id="dtdExtEditeur" class="classbutton">Editeur de dtd extern</button>
+        <button id="dtdExtfile" class="classbutton">Exporter fichier de dtd extern</button>
+        <button class="previousB">Précédent</button>
+    </div>
+
+    <!-- editeur dtd extern -->
+    <div id="EdtdExt" hidden>
+        <form id="form_EdtdExt">
+            <div class="divP">
+                <div class="divD">
+                    <h2>dtd:</h2>
+                    <textarea name="dtdex" id="dtdex"></textarea> 
+                </div>
+                <div class="divX">
+                    <h2>xml:</h2> 
+                    <textarea name="xmlex" id="xmlex"></textarea>
+                </div>
+                <center>
+                    <div id="resultatEdtdExt"></div> 
+                </center>
+                <div class="divB">
+                    <input type="submit" value="valider" class="classbutton" style="margin-top: 30px;">
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- fichier dtd extern -->
+    <div id="FdtdExt" hidden>
+        <form id="form_FdtdExt" enctype = "multipart/form-data">
+            <div class="c1">
+                <h2 style="text-align: center; margin-top: 2%;">dtd:</h2>
+                <center>
+                    <input type = "file" id="fdtdEx" name = "file1" class="Bfile" accept=".dtd"/>
+                </center>
+                <h2 style="text-align: center;">xml:</h2>
+                <center>
+                    <input type = "file" id="fxmlEx" name = "file2" class="Bfile" accept=".xml"/>
+                </center>
+            </div>
+            <center>
+                <div id="resultat"></div>
+                <input type = "submit" value="Valider" class="classbutton" style="margin-top: 30px;"/>
+            </center>
+        </form>
+    </div> 
+  
+    <!-- fichier dtd intern -->
+    <div id="FdtdInt" hidden>
+        <form id="formFdtdInt"  enctype = "multipart/form-data">
+            <center>
+                <h2 style="margin-top: 2%">dtd intern</h2>
+                <input type = "file" name = "file3" id="FdtdIn" class="Bfile" accept=".xml"/><br>
+                <div id="resultatdtdInt"></div>
+                <input type="submit" value="valider" class="classbutton" style="margin-top: 2%;">
+            </center>
+        </form>
+    </div>
+
+    <!-- editeur dtd intern -->
+    <div id="EdtdInt" hidden>
+        <form id="editeurDTD">
+            <h2>dtd intern</h2>
+            <textarea name="dtdin" id="dtdin"></textarea>
+            <div id="valide"> </div>
+            <input type="submit" value="valider" class="classbutton" style="margin-top: 30px;">
+        </form>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>           
+    <script>
+      var xmlex = CodeMirror.fromTextArea(document.getElementById('xmlex'), {
+          lineNumbers: true,
+          theme : "neo"
+      });
+      var dtdex = CodeMirror.fromTextArea(document.getElementById('dtdex'), {
+          lineNumbers: true,
+          theme : "neo"
+      });
+      var dtdin = CodeMirror.fromTextArea(document.getElementById('dtdin'), {
+          lineNumbers: true,
+          theme : "neo"
+      });
+
+      $('#dtdInt').on('click',function(){
+        $('#dtdIntern').show();
+        $('#divP').hide();
+        $('#dtdExtern').hide();
+        $('#EdtdInt').show();
+        $('#FdtdInt').hide();
+        $('#EdtdExt').hide();
+        $('#FdtdExt').hide();
+      })
+
+      $('#dtdExt').on('click',function(){
+        $('#dtdIntern').hide();
+        $('#divP').hide();
+        $('#dtdExtern').show();
+        $('#EdtdInt').hide();
+        $('#FdtdInt').hide();
+        $('#EdtdExt').show();
+        $('#FdtdExt').hide();
+      })
+
+      $('#dtdExtEditeur').on('click',function(){
+        $('#dtdExtern').show();
+        $('#dtdIntern').hide();
+        $('#divP').hide();
+        $('#EdtdExt').show();
+        $('#FdtdExt').hide();
+        $('#EdtdInt').hide();
+        $('#FdtdInt').hide();
+      })
+
+      $('#dtdExtfile').on('click',function(){
+        $('#dtdExtern').show();
+        $('#dtdIntern').hide();
+        $('#divP').hide();
+        $('#EdtdExt').hide();
+        $('#FdtdExt').show();
+        $('#EdtdInt').hide();
+        $('#FdtdInt').hide();
+      })
+      
+      $('#dtdIntEditeur').on('click',function(){
+        $('#valide').hide(); 
+        $('#dtdExtern').hide();
+        $('#dtdIntern').show();
+        $('#divP').hide();
+        $('#EdtdExt').hide();
+        $('#FdtdExt').hide();
+        $('#EdtdInt').show();
+        $('#FdtdInt').hide();
+      })
+      
+      $('#dtdIntfile').on('click',function(){
+        $('#dtdExtern').hide();
+        $('#dtdIntern').show();
+        $('#divP').hide();
+        $('#EdtdExt').hide();
+        $('#FdtdExt').hide();
+        $('#EdtdInt').hide();
+        $('#FdtdInt').show();
+      })
+      
+      $('.previousB').on('click',function(){
+        $('#dtdExtern').hide();
+        $('#dtdIntern').hide();
+        $('#divP').show();
+        $('#EdtdExt').hide();
+        $('#FdtdExt').hide();
+        $('#EdtdInt').hide();
+        $('#FdtdInt').hide();
+      })
+
+     ///////////////////  file dtd extern   /////////////////////////
+      $('#form_FdtdExt').on('submit', function (e){
+            e.preventDefault();
+            $('#resultat').empty();
+            var form_data = new FormData();
+            form_data.append('file1', $('#fdtdEx')[0].files[0]);
+            form_data.append('file2', $('#fxmlEx')[0].files[0]);
+            // form_data = $('#form_FdtdExt').serializeArray();
+            $(function () {
+              $.ajax({
+                type: 'POST',
+                url: '/indtdfile',
+                data: form_data,
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function (data) {
+                    if(data.result){
+                        console.log("Valid")
+                        //alert("Valid Files")
+                        $('#resultat').append("<h2>Le document est valide</h2>")
+                    }
+                    else{
+                        $('#resultat').append("<font color='red'><h2>Le document est invalide</h2></font>")
+                    }
+                },
+                error: function(){
+                    console.log("Error")
+                }
+              });
+            });
+        })
+      //////////////    file dtd intern     /////////////
+      $('#formFdtdInt').on('submit', function (e){
+            e.preventDefault();
+            $('#resultatdtdInt').empty();
+            var form_data = new FormData();
+            form_data.append('file3', $('#FdtdIn')[0].files[0]);
+            // form_data.append('file2', $('#fxmlEx')[0].files[0]);
+            // form_data = $('#form_FdtdExt').serializeArray();
+            $(function () {
+              $.ajax({
+                type: 'POST',
+                url: '/interndtd',
+                data: form_data,
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function (data) {
+                    if(data.result){
+                        console.log("Valid")
+                        //alert("Valid Files")
+                        $('#resultatdtdInt').append("<h2>Le document est valide</h2>")
+                    }
+                    else{
+                        $('#resultatdtdInt').append("<font color='red'><h2>Le document est invalide</h2></font>")
+                    }
+                },
+                error: function(){
+                    console.log("Error")
+                }
+              });
+            });
+        })
+
+              //////////////    editeur dtd intern     /////////////
+      $('#editeurDTD').on('submit', function (e){
+        e.preventDefault();
+        $('#valide').empty();
+        var form_data = new FormData();
+        form_data.append('dtdin', dtdin.getValue());
+        console.log(dtdin.getValue())
+        $(function () {
+      $.ajax({
+        type: 'POST',
+        url: '/intdtd',
+        data: form_data,
+        contentType: false,
+        cache: false,
+        processData: false,
+        success: function (data) {
+            if(data.result){
+                console.log("Valid")
+                //alert("Valid Files")
+                $('#valide').append("<h2>Le document est valide</h2>")
+            }
+            else{
+                $('#valide').append("<font color='red'><h2>Le document est invalide</h2></font>")
+            }
+        },
+        error: function(){
+            console.log("Error")
+        }
+      });
+    });
+
+    })
+
+              //////////////    editeur dtd extern     /////////////
+    $('#EdtdExt').on('submit', function (e){  
+        e.preventDefault();
+        $('#resultatEdtdExt').empty();
+        var form_data = new FormData();
+        form_data.append('xmlex', xmlex.getValue());
+        form_data.append('dtdex', dtdex.getValue());
+        $(function () {
+      $.ajax({
+        type: 'POST',
+        url: '/indtd',
+        data: form_data,
+        contentType: false,
+        cache: false,
+        processData: false,
+        success: function (data) {
+            if(data.result){
+                console.log("Valid")
+                //alert("Valid Files")
+                $('#resultatEdtdExt').append("<h2>Le document est valide</h2>")
+            }
+            else{
+                $('#resultatEdtdExt').append("<font color='red'><h2>Le document est invalide</h2></font>")
+            }
+        },
+        error: function(){
+            console.log("Error")
+        }
+      });
+    });
+
+    })
+        
+    </script>
+{% endblock %}

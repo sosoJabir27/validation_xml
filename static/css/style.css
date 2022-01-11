@@ -1,0 +1,72 @@
+body {
+    font-family: Helvetica;
+    background-image:url(../image/m3.jpg);
+}
+.val_xml{
+    font-size: 80px;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    color: #DAA390;
+    text-align: center;
+    margin-top: 40px;
+}
+.dtd_xs{
+    display:inline-block;
+    margin-top: 300px;
+    margin-left: 30%;
+    padding: 0%;
+}
+.dtd , .xs{
+    display:inline-block;
+    border: 3px solid black;
+    border-radius: 28px;
+    background-color: #DAA390;
+    padding: 0 10px 10px 10px;
+    text-align: center;
+    height: 50px; 
+}
+
+.xs{
+    margin-left: 160px; 
+}
+
+a{
+    color: black;
+}
+
+.divD, .divX{
+    display: inline-block;
+    width: 40%;
+    margin-left: 130px;
+}
+.divB{
+    margin-top: 40px;
+    margin-left: 50%;
+}
+
+#divP, #dtdIntern, #dtdExtern, #divPXS{
+    margin-left: 30%;
+    margin-top: 10%;
+}
+
+.classbutton, .previousB, .buttXS{
+    font-size: 25px;
+    background-color: #DAA390;
+    border-radius: 18px;
+    font-family: Chalkduster;
+}
+
+#EdtdInt{
+    width: 50%;
+    margin-left: 25%;
+    text-align: center;
+}
+.c1{
+    margin-top: 30px;
+    margin-bottom: 40px;
+}
+.Bfile{
+    font-size: 25px;
+    background-color: #DAA390;
+    border-radius: 18px;
+    font-family: Chalkduster;
+}

@@ -1,0 +1,133 @@
+{% extends "base.html" %} 
+{% block titre %}
+<title>validation par XML Schema</title>
+{% endblock %}
+{% block body %}
+<h1 style="text-align: center; margin-top: 40px;">Validation par XML Schema</h1>
+<div id="divPXS">
+    <button class="buttXS" id="EXS">Editeur XML Schema</button>
+    <button class="buttXS" id="FXS">Exporter fichier XML Schema</button>
+</div>
+<div id="divXS">
+    <form id="form_divXS">  
+        <div class="divP">
+            <div class="divD">
+                <h2>xmlschema:</h2>
+                <textarea name="xst" id="xst"></textarea>
+            </div>
+            <div class="divX">
+                <h2>xml:</h2> 
+                <textarea name="xmlt" id="xmlt"></textarea>
+            </div>
+            <center>
+                <div id="resultatxsE"></div>
+            </center>
+            <div class="divB">
+                <input type="submit" value="valider" class="classbutton" style="margin-top: 30px;">
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="divXSF" hidden>
+    <form id="form_divXSF" enctype = "multipart/form-data">
+        <center>
+            <h2 style="margin-top: 2%;">xmlschema:</h2>
+            <input type="file" name="xsf" id="xsf" class="Bfile" accept=".xsd"> 
+            <h2>xml:</h2> 
+            <input type="file" name="xmlf" id="xmlf" class="Bfile" accept=".xml"><br>
+            <div id="resultatxs"></div>
+            <input type="submit" value="valider" class="classbutton" style="margin-top: 30px;">
+        </center>
+    </form>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>           
+    <script>
+      var xst = CodeMirror.fromTextArea(document.getElementById('xst'), {
+          lineNumbers: true,
+          theme : "neo"
+      });
+      var xmlt = CodeMirror.fromTextArea(document.getElementById('xmlt'), {
+        lineNumbers: true,
+        theme : "neo"
+      });
+
+      /*$('.buttXS').on('click',function(){
+          $('#divXS').toggle();
+          $('#divXSF').toggle();
+      })*/
+      
+      $('#EXS').on('click',function(){
+        $('#divXS').show();
+        $('#divXSF').hide();
+      })
+      $('#FXS').on('click',function(){
+        $('#divXS').hide();
+        $('#divXSF').show();
+      })
+/////////////////////////   fichier xml schema    //////////////////////////////
+      $('#form_divXSF').on('submit', function (e){ 
+            e.preventDefault();
+            $('#resultatxs').empty();
+            var form_data = new FormData();
+            form_data.append('xsf', $('#xsf')[0].files[0]);
+            form_data.append('xmlf', $('#xmlf')[0].files[0]);
+            $(function () {
+              $.ajax({
+                type: 'POST',
+                url: '/xsf',
+                data: form_data,
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function (data) {
+                    if(data.result){
+                        console.log("Valid")
+                        $('#resultatxs').append("<h2>Le document est valide</h2>")
+                    }
+                    else{
+                        $('#resultatxs').append("<font color='red'><h2>Le document est invalide</h2></font>")
+                    }
+                },
+                error: function(){
+                    console.log("Error")
+                }
+              });
+            });
+        })
+
+    //////////////    editeur xml schema      /////////////
+    $('#form_divXS').on('submit', function (e){      
+        e.preventDefault();
+        $('#resultatxsE').empty();
+        var form_data = new FormData();  
+        form_data.append('xst', xst.getValue());
+        form_data.append('xmlt', xmlt.getValue());
+        $(function () {
+      $.ajax({
+        type: 'POST',
+        url: '/xst',
+        data: form_data,
+        contentType: false,
+        cache: false,
+        processData: false,
+        success: function (data) {
+            if(data.result){
+                console.log("Valid")
+                //alert("Valid Files")
+                $('#resultatxsE').append("<h2>Le document est valide</h2>")
+            }
+            else{
+                $('#resultatxsE').append("<font color='red'><h2>Le document est invalide</h2></font>")
+            }
+        },
+        error: function(){
+            console.log("Error")
+        }
+      });
+    });
+
+    })
+    </script>
+{% endblock %}
